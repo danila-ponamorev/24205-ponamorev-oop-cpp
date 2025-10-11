@@ -5,10 +5,11 @@
 #include <list>
 
 class TextProcessor {
+private:
+    bool is_delimiter(char c);
+    char to_lower(char c);
 public:
-    static bool is_delimiter(char c);
-    static char to_lower(char c);
-    static std::list<std::string> extract_words(const std::string& text);
+    std::list<std::string> extract_words(const std::string& line);
 };
 
 #endif

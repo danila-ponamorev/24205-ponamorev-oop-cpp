@@ -5,10 +5,20 @@
 #include <list>
 
 class CSVWriter {
+private:
+    std::string filename;
+    std::ofstream *file;
+    
 public:
-    static void write_results(const std::string& filename, 
-                            const std::list<std::pair<std::string, int>>& sorted_words, 
-                            int total_words);
+    CSVWriter(const std::string& filename_out);
+    ~CSVWriter();
+    
+    void open();
+    void close();
+
+    void write_row(const std::string& line);
+    
+    void reset();
 };
 
 #endif
