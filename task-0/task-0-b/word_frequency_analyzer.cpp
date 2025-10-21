@@ -34,17 +34,17 @@
 //     int WordFrequencyAnalyzer::get_total_words() {return total_words;}
 //     std::map<std::string, int>&  WordFrequencyAnalyzer::get_word_count() {return word_count;}
 
-WordFrequencyAnalyzerPrototipe::WordFrequencyAnalyzerPrototipe() {
+WordFrequencyAnalyzer::WordFrequencyAnalyzer() {
     word_frequency = new std::map<std::string, int>;
     sorted_word_frequency = new std::list<std::pair<std::string, int>>;
     total_words = 0;
 }
 
-WordFrequencyAnalyzerPrototipe::~WordFrequencyAnalyzerPrototipe() {
+WordFrequencyAnalyzer::~WordFrequencyAnalyzer() {
     delete word_frequency, sorted_word_frequency;
 }
 
-void WordFrequencyAnalyzerPrototipe::update_frequency(std::list<std::string>& words) {
+void WordFrequencyAnalyzer::update_frequency(std::list<std::string>& words) {
     if (word_frequency == nullptr) throw std::runtime_error("Word frequency map is not initialized");
 
     for(std::list<std::string>::const_iterator word = words.begin(); word != words.end(); ++word) {
@@ -53,7 +53,7 @@ void WordFrequencyAnalyzerPrototipe::update_frequency(std::list<std::string>& wo
     }
 }
 
-void WordFrequencyAnalyzerPrototipe::sort() {
+void WordFrequencyAnalyzer::sort() {
     if (word_frequency == nullptr) {
         delete sorted_word_frequency;
         throw std::runtime_error("Word frequency map is not initialized");
@@ -67,16 +67,16 @@ void WordFrequencyAnalyzerPrototipe::sort() {
     sorted_word_frequency->sort([](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) {return a.second > b.second;});
 }
 
-const int WordFrequencyAnalyzerPrototipe::get_total_words() const {
+const int WordFrequencyAnalyzer::get_total_words() const {
     return total_words;
 }
 
-const std::map<std::string, int>* WordFrequencyAnalyzerPrototipe::get_word_frequency() const {
+const std::map<std::string, int>* WordFrequencyAnalyzer::get_word_frequency() const {
     if (word_frequency == nullptr) throw std::runtime_error("Word frequency map is not initialized");
     return word_frequency;
 }
 
-const std::list<std::pair<std::string, int>>* WordFrequencyAnalyzerPrototipe::get_sorted_word_frequency() const {
+const std::list<std::pair<std::string, int>>* WordFrequencyAnalyzer::get_sorted_word_frequency() const {
     if (sorted_word_frequency == nullptr) throw std::runtime_error("Sorted word frequency map is not initialized");
     return sorted_word_frequency;
 

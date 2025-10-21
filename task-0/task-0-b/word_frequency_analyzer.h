@@ -21,15 +21,15 @@
 //     bool compare(const std::pair<std::string, int>& a, const std::pair<std::string, int>& b);
 // };
 
-class WordFrequencyAnalyzerPrototipe {
+class WordFrequencyAnalyzer {
 private:
     std::map<std::string, int>* word_frequency;
     std::list<std::pair<std::string, int>>* sorted_word_frequency;
     int total_words;
     
 public:
-    WordFrequencyAnalyzerPrototipe();
-    ~WordFrequencyAnalyzerPrototipe();
+    WordFrequencyAnalyzer();
+    ~WordFrequencyAnalyzer();
 
     void update_frequency(std::list<std::string>& words);
     void sort();

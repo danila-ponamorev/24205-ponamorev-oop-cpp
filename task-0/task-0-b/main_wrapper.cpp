@@ -19,7 +19,7 @@ int main_implementation(int argc, char* argv[]) {
     FileReader filereader(input_file);
     CSVWriter csvwriter(output_file);
     TextProcessor textprocessor;
-    WordFrequencyAnalyzerPrototipe analyzer;
+    WordFrequencyAnalyzer analyzer;
     
     std::string line;
     std::list<std::string> words;

@@ -87,7 +87,7 @@ TEST(TextProcessorTest, ExtractWordsOnlyDelimiters) {
 
 
 TEST(WordFrequencyAnalyzerTest, BasicFrequency) {
-    WordFrequencyAnalyzerPrototipe analyzer;
+    WordFrequencyAnalyzer analyzer;
     std::list<std::string> words = {"hello", "world", "hello", "test"};
     
     analyzer.update_frequency(words);
@@ -101,7 +101,7 @@ TEST(WordFrequencyAnalyzerTest, BasicFrequency) {
 }
 
 TEST(WordFrequencyAnalyzerTest, SortFunctionality) {
-    WordFrequencyAnalyzerPrototipe analyzer;
+    WordFrequencyAnalyzer analyzer;
     std::list<std::string> words = {"c", "b", "a", "b", "a", "a"}; // a:3, b:2, c:1
     
     analyzer.update_frequency(words);
@@ -115,7 +115,7 @@ TEST(WordFrequencyAnalyzerTest, SortFunctionality) {
 }
 
 TEST(WordFrequencyAnalyzerTest, EmptyWords) {
-    WordFrequencyAnalyzerPrototipe analyzer;
+    WordFrequencyAnalyzer analyzer;
     std::list<std::string> words;
     
     analyzer.update_frequency(words);
@@ -125,7 +125,7 @@ TEST(WordFrequencyAnalyzerTest, EmptyWords) {
 }
 
 TEST(WordFrequencyAnalyzerTest, SingleWord) {
-    WordFrequencyAnalyzerPrototipe analyzer;
+    WordFrequencyAnalyzer analyzer;
     std::list<std::string> words = {"hello"};
     
     analyzer.update_frequency(words);
@@ -135,7 +135,7 @@ TEST(WordFrequencyAnalyzerTest, SingleWord) {
 }
 
 TEST(WordFrequencyAnalyzerTest, MultipleUpdates) {
-    WordFrequencyAnalyzerPrototipe analyzer;
+    WordFrequencyAnalyzer analyzer;
     std::list<std::string> words1 = {"hello", "world"};
     std::list<std::string> words2 = {"hello", "test"};
     
