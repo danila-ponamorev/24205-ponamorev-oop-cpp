@@ -1,0 +1,2 @@
+WORD Word word WoRd wOrD
+TEST Test test TeSt tEsT

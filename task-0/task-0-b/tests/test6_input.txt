@@ -1,0 +1,4 @@
+the quick brown fox jumps over the lazy dog
+the quick brown fox runs fast
+the lazy dog sleeps all day
+fox and dog are animals
