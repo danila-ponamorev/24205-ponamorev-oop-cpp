@@ -3,7 +3,7 @@
 #include <list>
 
 bool TextProcessor::is_delimiter(char c) {
-    const std::string delimiters = " .,!@#$%^$*&+-=|?;:\t\n()[]{}<>\"'";
+    const std::string delimiters = " .,!@#$%^$*&+-=|?;_:\t\n()[]{}<>\"'";
     return delimiters.find(c) != std::string::npos;
 }
 
