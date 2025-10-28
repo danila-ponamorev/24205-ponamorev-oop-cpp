@@ -16,7 +16,7 @@ public:
     void open();
     void close();
 
-    void write_row(const std::string& line);
+    void write_row(const std::list<std::string>& line);
     
     void reset();
 };

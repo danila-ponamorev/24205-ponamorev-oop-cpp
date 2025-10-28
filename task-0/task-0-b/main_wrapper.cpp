@@ -38,10 +38,12 @@ int main_implementation(int argc, char* argv[]) {
     const int total_words = analyzer.get_total_words();
     
     csvwriter.open();
-    csvwriter.write_row("Слово,Частота,Частота (в %)");
+    std::list<std::string> row = {"Слово", "Частота", "Частота (в %)"};
+    csvwriter.write_row(row);
+    // csvwriter.write_row("Слово,Частота,Частота (в %)");
     for(std::list<std::pair<std::string, int>>::const_iterator pair = sorted_words->begin(); pair != sorted_words->end(); ++pair) {
-        line = pair->first + "," + std::to_string(pair->second) + "," + std::to_string(static_cast<float>(pair->second) / total_words * 100.0);
-        csvwriter.write_row(line);
+        row = {pair->first, std::to_string(pair->second), std::to_string(static_cast<float>(pair->second) / total_words * 100.0)};
+        csvwriter.write_row(row);
     }
     csvwriter.close();
     std::cout << "finished" << std::endl;

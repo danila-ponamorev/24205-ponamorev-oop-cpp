@@ -50,11 +50,17 @@ void CSVWriter::reset() {
     }
 }
 
-void CSVWriter::write_row(const std::string& line) {
+void CSVWriter::write_row(const std::list<std::string>& line) {
     if(file && file->is_open()) {
-        *file << line << std::endl;
+        size_t size = line.size();
+        for (std::list<std::string>::const_iterator i = line.begin(); i != line.end(); ++i) {
+            if (i != line.end()) {
+                *file << *i + ",";
+            } else {
+                *file << *i;
+            }
+            
+        }
+        *file << std::endl;
     }
 }
-
-
-

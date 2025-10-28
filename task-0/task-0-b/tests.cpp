@@ -24,6 +24,7 @@ TEST_P(MainTest, SuccessfulExecution) {
     EXPECT_EQ(main_implementation(argc, argv), 0);
 }
 
+// Проверка на правильную работу программы (Только ручная проверка)
 INSTANTIATE_TEST_SUITE_P(
     MainTests,
     MainTest,
@@ -36,6 +37,7 @@ INSTANTIATE_TEST_SUITE_P(
     )
 );
 
+// Тест на правильную работу TextProcessor. Проверка на простое извлечение слов
 TEST(TextProcessorTest, ExtractWordsBasic) {
     TextProcessor processor;
     std::string text = "Hello world this is a test";
@@ -46,6 +48,7 @@ TEST(TextProcessorTest, ExtractWordsBasic) {
     EXPECT_EQ(words.back(), "test");
 }
 
+// Тест на правильную работу TextProcessor. Проверка на правильное определение разделителей
 TEST(TextProcessorTest, ExtractWordsWithDelimiters) {
     TextProcessor processor;
     std::string text = "Hello, world! This; is... a test?";
@@ -56,6 +59,7 @@ TEST(TextProcessorTest, ExtractWordsWithDelimiters) {
     EXPECT_EQ(words.back(), "test");
 }
 
+// Тест на правильную работу TextProcessor. Проверка на чувствительность к регистру букв в слове.
 TEST(TextProcessorTest, ExtractWordsCaseSensitivity) {
     TextProcessor processor;
     std::string text = "Hello WORLD MiXeD CaSe";
@@ -69,6 +73,7 @@ TEST(TextProcessorTest, ExtractWordsCaseSensitivity) {
     }
 }
 
+// Тест на правильную работу TextProcessor. Проверяем работет ли при пустом списке.
 TEST(TextProcessorTest, ExtractWordsEmpty) {
     TextProcessor processor;
     std::string text = "";
@@ -77,6 +82,7 @@ TEST(TextProcessorTest, ExtractWordsEmpty) {
     EXPECT_TRUE(words.empty());
 }
 
+// Тест на правильную работу TextProcessor. Только разделители
 TEST(TextProcessorTest, ExtractWordsOnlyDelimiters) {
     TextProcessor processor;
     std::string text = " , . ! ? ; ";
@@ -85,7 +91,7 @@ TEST(TextProcessorTest, ExtractWordsOnlyDelimiters) {
     EXPECT_TRUE(words.empty());
 }
 
-
+// Тест на правильную работу WordFrequencyAnalyzer. Безовое определение частоты слов.
 TEST(WordFrequencyAnalyzerTest, BasicFrequency) {
     WordFrequencyAnalyzer analyzer;
     std::list<std::string> words = {"hello", "world", "hello", "test"};
@@ -100,6 +106,7 @@ TEST(WordFrequencyAnalyzerTest, BasicFrequency) {
     EXPECT_EQ(frequency->at("test"), 1);
 }
 
+// Тест на правильную работу WordFrequencyAnalyzer. Проверка метода sort
 TEST(WordFrequencyAnalyzerTest, SortFunctionality) {
     WordFrequencyAnalyzer analyzer;
     std::list<std::string> words = {"c", "b", "a", "b", "a", "a"}; // a:3, b:2, c:1
@@ -114,6 +121,7 @@ TEST(WordFrequencyAnalyzerTest, SortFunctionality) {
     EXPECT_EQ(sorted->back().second, 1);
 }
 
+// Тест на правильную работу WordFrequencyAnalyzer. Проверка на корректную работу при пустом массиве.
 TEST(WordFrequencyAnalyzerTest, EmptyWords) {
     WordFrequencyAnalyzer analyzer;
     std::list<std::string> words;
@@ -124,6 +132,7 @@ TEST(WordFrequencyAnalyzerTest, EmptyWords) {
     EXPECT_TRUE(analyzer.get_word_frequency()->empty());
 }
 
+// Тест на правильную работу WordFrequencyAnalyzer. Одно слово
 TEST(WordFrequencyAnalyzerTest, SingleWord) {
     WordFrequencyAnalyzer analyzer;
     std::list<std::string> words = {"hello"};
@@ -134,6 +143,7 @@ TEST(WordFrequencyAnalyzerTest, SingleWord) {
     EXPECT_EQ(analyzer.get_word_frequency()->at("hello"), 1);
 }
 
+// Тест на правильную работу WordFrequencyAnalyzer. Несколько раз обновляем статистику.
 TEST(WordFrequencyAnalyzerTest, MultipleUpdates) {
     WordFrequencyAnalyzer analyzer;
     std::list<std::string> words1 = {"hello", "world"};
