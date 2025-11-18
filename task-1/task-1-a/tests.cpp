@@ -11,7 +11,7 @@ TEST(BitArray, ConstructorWithBits) {
     BitArray ba(5, 0b10110);
     EXPECT_EQ(5, ba.size());
     EXPECT_FALSE(ba.empty());
-    EXPECT_EQ("01101", ba.to_string()); // Младшие биты first
+    EXPECT_EQ("01101", ba.to_string());
 }
 
 TEST(BitArray, CopyConstructor) {
@@ -62,55 +62,50 @@ TEST(BitArray, PushBack) {
 }
 
 TEST(BitArray, BitwiseAND) {
-    BitArray a(3, 0b101); // "101" в строковом представлении
-    BitArray b(3, 0b011); // "110" в строковом представлении
+    BitArray a(3, 0b101);
+    BitArray b(3, 0b011);
     a &= b;
-    // 1&1=1, 0&1=0, 1&0=0 -> "100"
     EXPECT_EQ("100", a.to_string());
 }
 
 TEST(BitArray, BitwiseOR) {
-    BitArray a(3, 0b101); // "101"
-    BitArray b(3, 0b011); // "110" 
+    BitArray a(3, 0b101);
+    BitArray b(3, 0b011);
     a |= b;
-    // 1|1=1, 0|1=1, 1|0=1 -> "111"
     EXPECT_EQ("111", a.to_string());
 }
 
 TEST(BitArray, BitwiseXOR) {
-    BitArray a(3, 0b101); // "101"
-    BitArray b(3, 0b011); // "110"
+    BitArray a(3, 0b101);
+    BitArray b(3, 0b011);
     a ^= b;
-    // 1^1=0, 0^1=1, 1^0=1 -> "011"
     EXPECT_EQ("011", a.to_string());
 }
 
 TEST(BitArray, LeftShift) {
-    BitArray ba(4, 0b1101); // "1011" в строковом представлении
+    BitArray ba(4, 0b1101);
     ba <<= 2;
-    // Сдвиг влево на 2: "1100" 
     EXPECT_EQ("0010", ba.to_string());
 }
 
 TEST(BitArray, RightShift) {
-    BitArray ba(4, 0b1101); // "1011" в строковом представлении
+    BitArray ba(4, 0b1101);
     ba >>= 1;
-    // Сдвиг вправо на 1: "0101"
     EXPECT_EQ("0110", ba.to_string());
 }
 
 TEST(BitArray, SetBit) {
-    BitArray ba(3, 0b101); // "101"
-    ba.set(1, false); // Устанавливаем бит 1 в false (уже false)
+    BitArray ba(3, 0b101);
+    ba.set(1, false);
     EXPECT_EQ("101", ba.to_string());
     
-    ba.set(0, false); // Устанавливаем бит 0 в false
+    ba.set(0, false);
     EXPECT_EQ("001", ba.to_string());
 }
 
 TEST(BitArray, ResetBit) {
-    BitArray ba(3, 0b101); // "101"
-    ba.reset(0); // Сбрасываем бит 0
+    BitArray ba(3, 0b101);
+    ba.reset(0);
     EXPECT_EQ("001", ba.to_string());
 }
 
@@ -129,19 +124,19 @@ TEST(BitArray, None) {
 }
 
 TEST(BitArray, Count) {
-    BitArray ba(5, 0b11010); // "01011" -> 3 единицы
+    BitArray ba(5, 0b11010);
     EXPECT_EQ(3, ba.count());
 }
 
 TEST(BitArray, IndexOperator) {
-    BitArray ba(3, 0b101); // "101"
+    BitArray ba(3, 0b101);
     EXPECT_TRUE(ba[0]);
     EXPECT_FALSE(ba[1]);
     EXPECT_TRUE(ba[2]);
 }
 
 TEST(BitArray, ToString) {
-    BitArray ba(4, 0b1010); // "0101"
+    BitArray ba(4, 0b1010);
     EXPECT_EQ("0101", ba.to_string());
 }
 
@@ -158,8 +153,8 @@ TEST(BitArray, Exceptions) {
 }
 
 TEST(BitArray, GlobalOperators) {
-    BitArray a(3, 0b101); // "101"
-    BitArray b(3, 0b011); // "110"
+    BitArray a(3, 0b101);
+    BitArray b(3, 0b011);
     
     BitArray and_result = a & b;
     EXPECT_EQ("100", and_result.to_string());

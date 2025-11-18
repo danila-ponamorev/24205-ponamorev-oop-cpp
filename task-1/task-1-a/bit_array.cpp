@@ -1,8 +1,13 @@
 #include "bit_array.h"
-#include <algorithm>
+
+#include <vector>
+#include <string>
+#include <stdexcept> // invalid_argument и т.д
+#include <algorithm> // swap, fill
 #include <climits>
 
-BitArray::BitArray() : bit_count_(0), valid_bits_in_last_block_(0) {}
+
+BitArray::BitArray() : data_(), bit_count_(0), valid_bits_in_last_block_(0) {}
 
 BitArray::BitArray(int num_bits, unsigned long value) : bit_count_(num_bits) {
     if (num_bits < 0) {
@@ -16,8 +21,7 @@ BitArray::BitArray(int num_bits, unsigned long value) : bit_count_(num_bits) {
         valid_bits_in_last_block_ = BITS_PER_BLOCK;
     }
 
-    // Инициализация значением value
-    for (int i = 0; i < num_bits && i < static_cast<int>(sizeof(value) * CHAR_BIT); ++i) {
+    for (int i = 0; i < num_bits && i < static_cast<int>(sizeof(value) * 8); ++i) {
         if (value & (1UL << i)) {
             data_[block_index(i)] |= bit_mask(i);
         }
@@ -30,7 +34,7 @@ BitArray::BitArray(const BitArray& other)
       bit_count_(other.bit_count_),
       valid_bits_in_last_block_(other.valid_bits_in_last_block_) {}
 
-BitArray::~BitArray() = default;
+BitArray::~BitArray() {};
 
 void BitArray::swap(BitArray& other) {
     data_.swap(other.data_);
@@ -57,7 +61,6 @@ void BitArray::resize(int num_bits, bool value) {
     }
 
     if (num_bits < bit_count_) {
-        // Уменьшение размера
         bit_count_ = num_bits;
         valid_bits_in_last_block_ = num_bits % BITS_PER_BLOCK;
         if (valid_bits_in_last_block_ == 0 && num_bits > 0) {
@@ -66,7 +69,6 @@ void BitArray::resize(int num_bits, bool value) {
         data_.resize((num_bits + BITS_PER_BLOCK - 1) / BITS_PER_BLOCK);
         sanitize_last_block();
     } else {
-        // Увеличение размера
         int old_count = bit_count_;
         bit_count_ = num_bits;
         valid_bits_in_last_block_ = num_bits % BITS_PER_BLOCK;
@@ -75,8 +77,7 @@ void BitArray::resize(int num_bits, bool value) {
         }
 
         data_.resize((num_bits + BITS_PER_BLOCK - 1) / BITS_PER_BLOCK);
-        
-        // Установка новых битов в значение value
+
         if (value) {
             for (int i = old_count; i < num_bits; ++i) {
                 data_[block_index(i)] |= bit_mask(i);
@@ -164,24 +165,20 @@ BitArray& BitArray::operator<<=(int n) {
     int block_shift = n / BITS_PER_BLOCK;
     int bit_shift = n % BITS_PER_BLOCK;
 
-    if (bit_shift == 0) {
-        // Простой случай - сдвиг на целое число блоков
-        for (int i = static_cast<int>(data_.size()) - 1; i >= block_shift; --i) {
-            data_[i] = data_[i - block_shift];
+    if (block_shift > 0) {
+        for (int i = 0; i < static_cast<int>(data_.size()) - block_shift; ++i) {
+            data_[i] = data_[i + block_shift];
         }
-    } else {
-        // Сложный случай - комбинированный сдвиг
-        for (int i = static_cast<int>(data_.size()) - 1; i > block_shift; --i) {
-            data_[i] = (data_[i - block_shift] << bit_shift) | 
-                       (data_[i - block_shift - 1] >> (BITS_PER_BLOCK - bit_shift));
-        }
-        data_[block_shift] = data_[0] << bit_shift;
+        std::fill(data_.end() - block_shift, data_.end(), 0);
     }
 
-    // Заполняем освободившиеся блоки нулями
-    std::fill(data_.begin(), data_.begin() + block_shift, 0);
-    
-    // Обнуляем неиспользуемые биты в последнем блоке
+    if (bit_shift > 0) {
+        for (int i = 0; i < static_cast<int>(data_.size()) - 1; ++i) {
+            data_[i] = (data_[i] << bit_shift) | (data_[i + 1] >> (BITS_PER_BLOCK - bit_shift));
+        }
+        data_.back() <<= bit_shift;
+    }
+
     sanitize_last_block();
     return *this;
 }
@@ -202,26 +199,22 @@ BitArray& BitArray::operator>>=(int n) {
 
     int block_shift = n / BITS_PER_BLOCK;
     int bit_shift = n % BITS_PER_BLOCK;
-    int last_block = static_cast<int>(data_.size()) - 1;
+    int last_index = static_cast<int>(data_.size()) - 1;
 
-    if (bit_shift == 0) {
-        // Простой случай - сдвиг на целое число блоков
-        for (int i = 0; i <= last_block - block_shift; ++i) {
-            data_[i] = data_[i + block_shift];
+    if (block_shift > 0) {
+        for (int i = last_index; i >= block_shift; --i) {
+            data_[i] = data_[i - block_shift];
         }
-    } else {
-        // Сложный случай - комбинированный сдвиг
-        for (int i = 0; i < last_block - block_shift; ++i) {
-            data_[i] = (data_[i + block_shift] >> bit_shift) | 
-                       (data_[i + block_shift + 1] << (BITS_PER_BLOCK - bit_shift));
-        }
-        data_[last_block - block_shift] = data_[last_block] >> bit_shift;
+        std::fill(data_.begin(), data_.begin() + block_shift, 0);
     }
 
-    // Заполняем освободившиеся блоки нулями
-    std::fill(data_.end() - block_shift, data_.end(), 0);
-    
-    // Обнуляем неиспользуемые биты в последнем блоке
+    if (bit_shift > 0) {
+        for (int i = last_index; i > 0; --i) {
+            data_[i] = (data_[i] >> bit_shift) | (data_[i - 1] << (BITS_PER_BLOCK - bit_shift));
+        }
+        data_[0] >>= bit_shift;
+    }
+
     sanitize_last_block();
     return *this;
 }
@@ -250,7 +243,9 @@ BitArray& BitArray::set(int n, bool value) {
 }
 
 BitArray& BitArray::set() {
-    std::fill(data_.begin(), data_.end(), ~0U);
+    for (auto& block : data_) {
+        block = ~0U;
+    }
     sanitize_last_block();
     return *this;
 }
@@ -260,7 +255,9 @@ BitArray& BitArray::reset(int n) {
 }
 
 BitArray& BitArray::reset() {
-    std::fill(data_.begin(), data_.end(), 0);
+    for (auto& block : data_) {
+        block = 0;
+    }
     return *this;
 }
 
@@ -289,8 +286,7 @@ BitArray BitArray::operator~() const {
 int BitArray::count() const {
     int count = 0;
     for (uint32_t block : data_) {
-        // Используем встроенную функцию для подсчета битов
-        count += __builtin_popcount(block);
+        count += popcount(block);
     }
     return count;
 }
@@ -317,7 +313,6 @@ std::string BitArray::to_string() const {
     return result;
 }
 
-// Вспомогательные методы
 void BitArray::validate_index(int index) const {
     if (index < 0 || index >= bit_count_) {
         throw std::out_of_range("Bit index out of range");
@@ -329,8 +324,17 @@ void BitArray::sanitize_last_block() {
         return;
     }
     
-    uint32_t mask = (1U << valid_bits_in_last_block_) - 1;
+    uint32_t mask = (1UL << valid_bits_in_last_block_) - 1;
     data_.back() &= mask;
+}
+
+int BitArray::popcount(uint32_t x) {
+    int count = 0;
+    while (x) {
+        count += (x & 1);
+        x >>= 1;
+    }
+    return count;
 }
 
 bool operator==(const BitArray& a, const BitArray& b) {
