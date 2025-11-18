@@ -46,7 +46,7 @@ public:
     std::string to_string() const; // Return string representation of bits
 
 private:
-    static const int BITS_PER_BLOCK = sizeof(uint32_t) * 8;
+    const int BITS_PER_BLOCK = sizeof(uint32_t) * 8;
     std::vector<uint32_t> data_;
     int bit_count_;
     int valid_bits_in_last_block_;
@@ -57,7 +57,7 @@ private:
     void validate_index(int index) const; // Validate bit index range
     void sanitize_last_block(); // Clear unused bits in last block to maintain consistency
 
-    static int popcount(uint32_t x); // Count set bits in 32-bit value
+    int popcount(uint32_t x) const; // Count set bits in 32-bit value
 };
 
 bool operator==(const BitArray& a, const BitArray& b); // Compare two BitArrays for equality

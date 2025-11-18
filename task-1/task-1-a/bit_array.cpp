@@ -328,7 +328,7 @@ void BitArray::sanitize_last_block() {
     data_.back() &= mask;
 }
 
-int BitArray::popcount(uint32_t x) {
+int BitArray::popcount(uint32_t x) const {
     int count = 0;
     while (x) {
         count += (x & 1);
