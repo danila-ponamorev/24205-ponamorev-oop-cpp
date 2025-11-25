@@ -39,7 +39,7 @@ bool ConsoleCommandExecutor::execute(const std::vector<std::string>& tokens) {
 
 void ConsoleCommandExecutor::showHelp() {
     std::cout << "Available commands:\n"
-              << "  tick [n] / t [n] - advance n iterations (default 1)\n"
+              << "  tick [n] or t [n] - advance n iterations (default 1)\n"
               << "  dump <filename> - save universe to file\n"
               << "  help - show this help\n"
               << "  exit - exit the program\n";
