@@ -1,9 +1,13 @@
 #include <iostream>
-#include <string>
+#include "bit_array.h"
 
 int main(void) {
-    int c = 0b1101;
-    std::cout << std::to_string(c) << std::endl;
+    BitArray array(8, 63);
+    std::cout << array.to_string() << std::endl;
+    array[2] = 0;
+    array[3] = 0;
+    array[7] = 1;
+    std::cout << array.to_string() << std::endl;
 
     return 0;
 }

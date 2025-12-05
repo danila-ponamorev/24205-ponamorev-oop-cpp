@@ -14,6 +14,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 add_executable(test-task-1-a tests.cpp bit_array.cpp)
+add_executable(run main.cpp bit_array.cpp)
 
 target_link_libraries(test-task-1-a GTest::gtest_main)
 

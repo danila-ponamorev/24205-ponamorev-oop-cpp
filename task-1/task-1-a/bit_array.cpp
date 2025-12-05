@@ -6,6 +6,38 @@
 #include <algorithm> // swap, fill
 #include <climits>
 
+BitReference::BitReference(BitArray& array, int index) : bit_array(array), bit_index(index) {}
+
+BitReference::operator bool() const {
+    bit_array.validate_index(bit_index);
+    return (bit_array.data_[bit_array.block_index(bit_index)] & 
+            bit_array.bit_mask(bit_index)) != 0;
+}
+
+BitReference& BitReference::operator=(bool value) {
+    bit_array.validate_index(bit_index);
+    if (value) {
+        bit_array.data_[bit_array.block_index(bit_index)] |= 
+            bit_array.bit_mask(bit_index);
+    } else {
+        bit_array.data_[bit_array.block_index(bit_index)] &= 
+            ~bit_array.bit_mask(bit_index);
+    }
+    return *this;
+}
+
+BitReference& BitReference::operator=(const BitReference& other) {
+    *this = static_cast<bool>(other);
+    return *this;
+}
+
+BitReference& BitReference::flip() {
+    bit_array.validate_index(bit_index);
+    bit_array.data_[bit_array.block_index(bit_index)] ^= 
+        bit_array.bit_mask(bit_index);
+    return *this;
+}
+
 
 BitArray::BitArray() : data_(), bit_count_(0), valid_bits_in_last_block_(0) {}
 
@@ -294,6 +326,11 @@ int BitArray::count() const {
 bool BitArray::operator[](int index) const {
     validate_index(index);
     return (data_[block_index(index)] & bit_mask(index)) != 0;
+}
+
+BitReference BitArray::operator[](int index) {
+    validate_index(index);
+    return BitReference(*this, index);
 }
 
 int BitArray::size() const {

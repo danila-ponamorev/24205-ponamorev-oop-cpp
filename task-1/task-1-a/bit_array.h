@@ -5,8 +5,30 @@
 #include <string>
 #include <cstdint>
 
+class BitArray;
+
+class BitReference {
+private:
+    BitArray& bit_array;
+    int bit_index;
+
+public:
+    BitReference(BitArray& array, int index);
+
+    operator bool() const; // read
+
+    BitReference& operator=(bool value); //Set bit
+    BitReference& operator=(const BitReference& other); // Set bit
+
+    BitReference& flip(); // invert bit
+};
+
 class BitArray
 {
+
+friend class BitReference;
+
+
 public:
     BitArray(); // Create empty bit array
     ~BitArray(); // Destroy bit array and free memory
@@ -41,6 +63,7 @@ public:
     int count() const; // Return number of set bits
 
     bool operator[](int i) const; // Return value of specific bit
+    BitReference operator[](int i); // Return reference to a bit
     int size() const; // Return number of bits in array
     bool empty() const; // Return true if array has no bits
     std::string to_string() const; // Return string representation of bits
