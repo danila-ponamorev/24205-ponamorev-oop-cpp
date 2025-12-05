@@ -1,9 +1,21 @@
 #include "Application.h"
 #include <iostream>
 
-Application::Application(int argc, char* argv[]) {
-    config = Config::parse(argc, argv);
-    
+Application::Application(Config& config) {
+    setup(config);
+}
+
+Application::Application() : universe(), config() {};
+
+void Application::run() {
+    if (config.mode == RunMode::OFFLINE) {
+        runOffline();
+    } else {
+        runInteractive();
+    }
+}
+
+void Application::setup(Config& config) {
     if (!config.inputFile.empty()) {
         FileReader fileReader(config.inputFile);
         PresetParser presetParser;
@@ -20,7 +32,6 @@ Application::Application(int argc, char* argv[]) {
         const size_t width = presetParser.get_width();
         const size_t height = presetParser.get_height();
 
-        //Universe universe(name, rule, width, height);
         universe.setName(name);
         universe.setRule(rule);
         universe.setWidth(width);
@@ -29,40 +40,25 @@ Application::Application(int argc, char* argv[]) {
             universe.setCell(cell.first, cell.second, CellState::ALIVE);
         }
 
-
-        // universe = FileReader::readFromFile(config.inputFile);
     } else {
         universe = PresetLibrary::loadGosperGliderGun();
     }
 }
 
-void Application::run() {
-    if (config.mode == RunMode::OFFLINE) {
-        runOffline();
-    } else {
-        runInteractive();
-    }
-}
-
 void Application::runOffline() {
-    universe.tick(config.iterations);
-    if (!config.outputFile.empty()) {
-        FileWriter fileWriter(config.outputFile);
-        PresetMaker presetMaker;
-        fileWriter.open();
-        std::list<std::string> preset = presetMaker.make(universe);
-        fileWriter.write_all(preset);
-        fileWriter.close();
-        // FileWriter::writeToFile(universe, config.outputFile);
+    ConsoleCommandExecutor executor(universe);
 
+    executor.tick(config.iterations);
+    if (!config.outputFile.empty()) {
+        executor.dump(config.inputFile); 
     } else {
-        ConsoleRenderer::render(universe);
+        executor.render();
     }
 }
 
 void Application::runInteractive() {
-    ConsoleRenderer::render(universe);
     ConsoleCommandExecutor executor(universe);
+    executor.render();
     
     std::string input;
     while (true) {

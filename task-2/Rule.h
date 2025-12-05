@@ -6,6 +6,7 @@
 class Rule {
 public:
     Rule(const std::string& ruleStr = "B3/S23");
+    // Rule();
     void setRule(const std::string& ruleStr);
     bool shouldBorn(int neighbors) const;
     bool shouldSurvive(int neighbors) const;

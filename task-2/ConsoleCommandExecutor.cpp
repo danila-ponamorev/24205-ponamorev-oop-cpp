@@ -1,5 +1,6 @@
 #include "ConsoleCommandExecutor.h"
 #include <iostream>
+#include <string>
 
 ConsoleCommandExecutor::ConsoleCommandExecutor(Universe& u) : universe(u) {}
 
@@ -15,26 +16,38 @@ bool ConsoleCommandExecutor::execute(const std::vector<std::string>& tokens) {
     } else if (command == "tick" || command == "t") {
         int n = 1;
         if (tokens.size() > 1) n = std::stoi(tokens[1]);
-        universe.tick(n);
-        ConsoleRenderer::render(universe);
+        tick(n);
+        render();
+        
     } else if (command == "dump") {
         if (tokens.size() < 2) {
             std::cout << "Usage: dump <filename>\n";
         } else {
-            FileWriter fileWriter(tokens[1]);
-            PresetMaker presetMaker;
-            fileWriter.open();
-            std::list<std::string> preset = presetMaker.make(universe);
-            fileWriter.write_all(preset);
-            fileWriter.close();
-            //FileWriter::writeToFile(universe, tokens[1]);
+            dump(tokens[1]);
             std::cout << "Universe saved to " << tokens[1] << "\n";
         }
     } else {
         std::cout << "Unknown command. Type 'help' for available commands.\n";
     }
-    
+
     return true;
+}
+
+void ConsoleCommandExecutor::tick(int n) {
+    universe.tick(n);
+}
+
+void ConsoleCommandExecutor::render() {
+    ConsoleRenderer::render(universe);
+}
+
+void ConsoleCommandExecutor::dump(std::string file) {
+     FileWriter fileWriter(file);
+            PresetMaker presetMaker;
+            fileWriter.open();
+            std::list<std::string> preset = presetMaker.make(universe);
+            fileWriter.write_all(preset);
+            fileWriter.close();
 }
 
 void ConsoleCommandExecutor::showHelp() {

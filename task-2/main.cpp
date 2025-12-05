@@ -1,10 +1,14 @@
 
 #include "Application.h"
+#include "Application.h"
 #include <iostream>
 
 int main(int argc, char* argv[]) {
     try {
-        Application app(argc, argv);
+        Config config = Config::parse(argc, argv);
+
+        Application app;
+        app.setup(config);
         app.run();
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;

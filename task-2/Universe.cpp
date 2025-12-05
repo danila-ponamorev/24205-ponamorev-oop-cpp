@@ -1,7 +1,10 @@
 #include "Universe.h"
 
-Universe::Universe(const std::string& name, const Rule& rule, size_t width, size_t height)
-    : name(name), rule(rule), grid(width, height), iteration(0) {}
+Universe::Universe(const std::string& name, const Rule& rule, size_t width, size_t height) {
+    setup(name, rule, width, height);
+}
+
+Universe::Universe() {};
 
 void Universe::tick(int n) {
     for (int i = 0; i < n; ++i) {
@@ -25,6 +28,13 @@ void Universe::tick(int n) {
         grid = newGrid;
         iteration++;
     }
+}
+
+void Universe::setup(const std::string& name, const Rule& rule, size_t width, size_t height) {
+    setName(name);
+    setRule(rule);
+    setWidth(width);
+    setHeight(height);
 }
 
 void Universe::setWidth(size_t newWidth) { grid.setWidth(newWidth); }

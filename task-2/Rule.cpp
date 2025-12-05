@@ -7,6 +7,8 @@ Rule::Rule(const std::string& ruleStr) {
     setRule(ruleStr);
 }
 
+// Rule::Rule() = default;
+
 void Rule::setRule(const std::string& ruleStr) {
     birth.clear();
     survival.clear();

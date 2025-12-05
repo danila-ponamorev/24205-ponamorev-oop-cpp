@@ -7,6 +7,8 @@
 class Grid {
 public:
     Grid(size_t width = 50, size_t height = 50);
+    // Grid();
+    void setup(size_t width, size_t height);
     CellState getCell(int x, int y) const;
     void setCell(int x, int y, CellState state);
     size_t getWidth() const;

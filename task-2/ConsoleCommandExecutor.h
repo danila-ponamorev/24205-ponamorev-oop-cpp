@@ -13,7 +13,11 @@ private:
     
 public:
     ConsoleCommandExecutor(Universe& u);
+    ConsoleCommandExecutor();
     bool execute(const std::vector<std::string>& tokens);
+    void tick(int n);
+    void render();
+    void dump(std::string file);
 
 private:
     void showHelp();

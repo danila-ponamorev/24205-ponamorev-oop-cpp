@@ -17,10 +17,13 @@ class Application {
 private:
     Config config;
     Universe universe;
+    // ConsoleCommandExecutor executor;
 
 public:
-    Application(int argc, char* argv[]);
+    Application();
+    Application(Config& config);
     void run();
+    void setup(Config& config);
 
 private:
     void runOffline();

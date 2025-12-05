@@ -7,7 +7,8 @@
 
 class Universe {
 public:
-    Universe(const std::string& name = "Universe", const Rule& rule = Rule(), size_t width = 50, size_t height = 50);
+    Universe(const std::string& name, const Rule& rule, size_t width, size_t height);
+    Universe();
     void tick(int n = 1);
     void setCell(int x, int y, CellState state);
     CellState getCell(int x, int y) const;
@@ -20,6 +21,7 @@ public:
     Rule getRule() const;
     void setName(const std::string& newName);
     void setRule(const Rule& newRule);
+    void setup(const std::string& name = "Universe", const Rule& rule = Rule(), size_t width = 50, size_t height = 50);
 
 private:
     std::string name;

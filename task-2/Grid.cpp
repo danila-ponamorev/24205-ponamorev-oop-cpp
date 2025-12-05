@@ -2,8 +2,17 @@
 #include <algorithm>
 #include <cstddef>
 
-Grid::Grid(size_t width, size_t height) 
-    : width(width), height(height), cells(height, std::vector<CellState>(width, CellState::DEAD)) {}
+Grid::Grid(size_t width, size_t height) {
+    setup(width, height);
+}
+
+// Grid::Grid() = default;
+
+void Grid::setup(size_t width_in, size_t height_in) {
+    width = width_in;
+    height = height_in;
+    cells = std::vector<std::vector<CellState>>(height, std::vector<CellState>(width, CellState::DEAD));
+}
 
 CellState Grid::getCell(int x, int y) const {
     x = (x + width) % width;
