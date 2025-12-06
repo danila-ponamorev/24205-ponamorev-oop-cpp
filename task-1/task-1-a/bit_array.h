@@ -15,12 +15,9 @@ private:
 public:
     BitReference(BitArray& array, int index);
 
-    operator bool() const; // read
+    operator bool() const; // Read bit
 
-    BitReference& operator=(bool value); //Set bit
-    BitReference& operator=(const BitReference& other); // Set bit
-
-    BitReference& flip(); // invert bit
+    BitReference& operator=(bool value); // Set bit
 };
 
 class BitArray

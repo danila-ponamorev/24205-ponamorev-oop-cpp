@@ -26,19 +26,6 @@ BitReference& BitReference::operator=(bool value) {
     return *this;
 }
 
-BitReference& BitReference::operator=(const BitReference& other) {
-    *this = static_cast<bool>(other);
-    return *this;
-}
-
-BitReference& BitReference::flip() {
-    bit_array.validate_index(bit_index);
-    bit_array.data_[bit_array.block_index(bit_index)] ^= 
-        bit_array.bit_mask(bit_index);
-    return *this;
-}
-
-
 BitArray::BitArray() : data_(), bit_count_(0), valid_bits_in_last_block_(0) {}
 
 BitArray::BitArray(int num_bits, unsigned long value) : bit_count_(num_bits) {
