@@ -15,14 +15,7 @@ BitReference::operator bool() const {
 }
 
 BitReference& BitReference::operator=(bool value) {
-    bit_array.validate_index(bit_index);
-    if (value) {
-        bit_array.data_[bit_array.block_index(bit_index)] |= 
-            bit_array.bit_mask(bit_index);
-    } else {
-        bit_array.data_[bit_array.block_index(bit_index)] &= 
-            ~bit_array.bit_mask(bit_index);
-    }
+    bit_array.set(bit_index, value);
     return *this;
 }
 

@@ -15,9 +15,9 @@ private:
 public:
     BitReference(BitArray& array, int index); // Create bit reference with specified index
 
-    operator bool() const; // Read bit
+    operator bool() const; // Convert to bool
 
-    BitReference& operator=(bool value); // Set bit
+    BitReference& operator=(bool value); // Set specific bit
 };
 
 class BitArray
@@ -34,7 +34,7 @@ public:
     BitArray(const BitArray& b); // Create copy of existing bit array
 
     void swap(BitArray& b); // Exchange contents with another bit array
-    BitArray& operator=(const BitArray& b); //Assign the content of another bit array.
+    BitArray& operator=(const BitArray& b); // Assign the content of another bit array.
 
     void resize(int num_bits, bool value = false); // Change array size, initialize new bits with value
     void clear(); // Remove all bits (set size to zero)
