@@ -21,6 +21,8 @@ Config Config::parse(int argc, char* argv[]) {
             }
         } else if (arg.substr(0, 9) == "--output=") {
             config.outputFile = arg.substr(9);
+        } else if (arg.substr(0, 9) == "--preset=") {
+            config.presetUniverse = arg.substr(9);
         } else {
             config.inputFile = arg;
         }

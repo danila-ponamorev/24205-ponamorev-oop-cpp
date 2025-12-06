@@ -40,7 +40,17 @@ void Application::setup(Config& config) {
             universe.setCell(cell.first, cell.second, CellState::ALIVE);
         }
 
+    }
+    else if(config.presetUniverse == "Glider") {
+        universe = PresetLibrary::loadGlider();
+    } else if(config.presetUniverse == "Blinker") {
+        universe = PresetLibrary::loadBlinker();
+    }else if(config.presetUniverse == "RPentomino") {
+        universe = PresetLibrary::loadRPentomino();
+    } else if(config.presetUniverse == "GosperGliderGun") {
+        universe = PresetLibrary::loadGosperGliderGun();
     } else {
+        std::cout << "WARNING: Failed to load Universe preset. Name not recognized. Loading deafult Universe preset." << std::endl;
         universe = PresetLibrary::loadGosperGliderGun();
     }
 }

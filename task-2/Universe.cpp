@@ -4,7 +4,7 @@ Universe::Universe(const std::string& name, const Rule& rule, size_t width, size
     setup(name, rule, width, height);
 }
 
-Universe::Universe() {};
+Universe::Universe() : name(), rule(), grid(), iteration(0) {};
 
 void Universe::tick(int n) {
     for (int i = 0; i < n; ++i) {
@@ -31,6 +31,7 @@ void Universe::tick(int n) {
 }
 
 void Universe::setup(const std::string& name, const Rule& rule, size_t width, size_t height) {
+    iteration = 0;
     setName(name);
     setRule(rule);
     setWidth(width);

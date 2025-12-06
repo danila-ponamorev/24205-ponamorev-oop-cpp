@@ -1,4 +1,3 @@
-
 #include "Application.h"
 #include "Application.h"
 #include <iostream>
