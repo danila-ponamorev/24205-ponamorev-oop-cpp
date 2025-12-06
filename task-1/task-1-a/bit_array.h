@@ -13,7 +13,7 @@ private:
     int bit_index;
 
 public:
-    BitReference(BitArray& array, int index);
+    BitReference(BitArray& array, int index); // Create bit reference with specified index
 
     operator bool() const; // Read bit
 
